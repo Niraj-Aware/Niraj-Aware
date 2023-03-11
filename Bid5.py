@@ -95,7 +95,7 @@ def main():
     col1, col2, col3 = st.columns(3)
     with col1:
         if st.button("Red"):
-            if st.session_state['logged_in']
+            if st.session_state['logged_in']:
             username = st.session_state['username']
             wallet = USERS[username]['wallet']
             bid_amount = st.number_input("Enter bid amount", min_value=st.session_state['increment'], max_value=wallet, step=st.session_state['increment'])
