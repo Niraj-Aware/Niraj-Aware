@@ -80,3 +80,5 @@ def main():
                               winner_color='Red' if red_bid<green_bid else 'Green'
                               profit=bid*0.7
                               new_wallet=current_wal
+if __name__ == '__main__':
+main()
