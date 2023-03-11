@@ -103,10 +103,10 @@ def main():
                 st.session_state['bids']['Red'] += bid_amount
             st.success("Bid placed successfully!")
             else:
-            st.error("Insufficient funds")
+                st.error("Insufficient funds")
             with col2:
                 if
-            st.button("Green"):
+                    st.button("Green"):
             if st.session_state['logged_in']:
                 username = st.session_state['username']
             wallet = USERS[username]['wallet']
