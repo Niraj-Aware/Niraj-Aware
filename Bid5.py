@@ -131,7 +131,13 @@ def main():
     col1, col2, col3 = st.columns(3)
     with col1:
         if st.button("Red"):
-            if st.session_state['logged_in
+            st.session_state['bids']['Red'] += st.session_state['increment']
+    with col2:
+        if st.button("Green"):
+            st.session_state['bids']['Green'] += st.session_state['increment']
+    with col3:
+        if st.button("Blue"):
+            st.session_state['bids']['Blue'] += st.session_state['increment']
 
             # display wallet balance
             if st.session_state['logged_in']:
