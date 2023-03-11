@@ -79,5 +79,4 @@ def main():
                               green_bid=sum([x[2] for x in game_data if x[1]=='Green'])
                               winner_color='Red' if red_bid<green_bid else 'Green'
                               profit=bid*0.7
-                              new_wallet=current_wallet+profit if color==winner_color else current_wal
-                                
+                              new_wallet=current_wal
