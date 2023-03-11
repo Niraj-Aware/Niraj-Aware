@@ -81,4 +81,4 @@ def main():
                               profit=bid*0.7
                               new_wallet=current_wal
 if __name__ == '__main__':
-main()
+ main()
