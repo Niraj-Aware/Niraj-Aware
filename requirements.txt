@@ -1,4 +1,1 @@
-scikit-learn
-fuzzywuzzy
 streamlit
-sqlite3
