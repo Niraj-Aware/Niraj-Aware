@@ -52,11 +52,11 @@ def main():
         
         if action == "Park car":
             car_id = st.text_input("Enter car ID:")
-            if st.button("Park car"):
+            if st.button("Park"):
                 parking_lot.park_car(car_id)
         elif action == "Remove car":
             car_id = st.text_input("Enter car ID:")
-            if st.button("Remove car"):
+            if st.button("Release"):
                 parking_lot.remove_car(car_id)
         elif action == "Exit":
             st.write("Exiting...")
