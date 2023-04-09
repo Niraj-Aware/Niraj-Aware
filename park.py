@@ -10,19 +10,33 @@ def main():
 
     # display the parking lot cards
     cols = st.beta_columns(4)
+    selected_spots = []
     for i, col in enumerate(cols):
         if parking_spots[i] == "Available":
-            button = col.button(f"Spot {i+1}\n{parking_spots[i]}")
-            if button:
-                parking_spots[i] = "Occupied"
-                col.empty()
+            spot_selected = col.checkbox(f"Spot {i+1}\n{parking_spots[i]}")
+            if spot_selected:
+                selected_spots.append(i)
                 col.info(f"Spot {i+1}\n{parking_spots[i]}")
-        else:
-            button = col.button(f"Spot {i+1}\n{parking_spots[i]}")
-            if button:
-                parking_spots[i] = "Available"
+            else:
                 col.empty()
+        else:
+            spot_selected = col.checkbox(f"Spot {i+1}\n{parking_spots[i]}")
+            if spot_selected:
+                selected_spots.append(i)
                 col.success(f"Spot {i+1}\n{parking_spots[i]}")
+            else:
+                col.empty()
+
+    if selected_spots:
+        if st.button("Update Selected Spots"):
+            for spot_index in selected_spots:
+                if parking_spots[spot_index] == "Available":
+                    parking_spots[spot_index] = "Occupied"
+                else:
+                    parking_spots[spot_index] = "Available"
+            selected_spots = []
+    
+    st.write(parking_spots)
 
 if __name__ == "__main__":
     main()
