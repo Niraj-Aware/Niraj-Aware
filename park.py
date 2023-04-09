@@ -9,13 +9,18 @@ class ParkingLot:
         self.occupied_spots = {}
         
     def park_car(self, car_id):
-        if self.available_spots == 0:
-            st.write("Sorry, parking lot is full.")
-        else:
-            spot = self.get_available_spot()
-            self.occupied_spots[spot] = car_id
-            self.available_spots -= 1
-            st.write(f"Car {car_id} parked at spot {spot}")
+    if self.available_spots == 0:
+        st.write("Sorry, parking lot is full.")
+    else:
+        for spot, parked_car_id in self.occupied_spots.items():
+            if parked_car_id == car_id:
+                st.write(f"Car {car_id} is already parked at spot {spot}.")
+                return
+        # Car is not already parked, find available spot
+        spot = self.get_available_spot()
+        self.occupied_spots[spot] = car_id
+        self.available_spots -= 1
+        st.write(f"Car {car_id} parked at spot {spot}")
     
     def get_available_spot(self):
         for i in range(1, self.capacity+1):
