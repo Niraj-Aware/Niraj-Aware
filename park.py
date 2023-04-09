@@ -33,48 +33,46 @@ class ParkingLot:
             st.write(f"Car {car_id} not found in parking lot")
 
 def main():
-    st.title("Smart Car Parking Simulation")
+    st.set_page_config(page_title="Smart Parking System", page_icon="🅿️", layout="wide")
+    st.title("Smart Parking System")
+    st.write("Welcome to the Smart Parking System! Please enter the capacity of the parking lot.")
+    
     capacity = st.number_input("Enter parking lot capacity:", value=5, min_value=1)
     parking_lot = ParkingLot(capacity)
-    parked_cars = {}
     
-    while True:
-        st.write("\n### Parking lot status:")
-        st.write(f"Available spots: {parking_lot.available_spots}/{parking_lot.capacity}")
-        if parking_lot.occupied_spots:
-            st.write("Occupied spots:")
-            for spot, car_id in parking_lot.occupied_spots.items():
-                st.write(f"Spot {spot}: Car {car_id}")
-        else:
-            st.write("No cars parked in the lot.")
+    st.write("\n### Parking lot status:")
+    st.write(f"Available spots: {parking_lot.available_spots}/{parking_lot.capacity}")
+    if parking_lot.occupied_spots:
+        st.write("Occupied spots:")
+        for spot, car_id in parking_lot.occupied_spots.items():
+            st.write(f"Spot {spot}: Car {car_id}")
+    else:
+        st.write("No cars parked in the lot.")
+    
+    st.write("\n### Actions:")
+    col1, col2, col3 = st.beta_columns(3)
+    
+    with col1:
+        car_id = st.text_input("Enter car ID:")
         
-        st.write("\n### Actions:")
-        
-        # Park car button
+    with col2:
         if st.button("Park car"):
-            car_id = st.text_input("Enter car ID:")
-            if car_id in parked_cars.values():
-                st.write(f"Car {car_id} is already parked in the lot.")
-            else:
-                parking_lot.park_car(car_id)
-                spot = [spot for spot, parked_car_id in parking_lot.occupied_spots.items() if parked_car_id == car_id][0]
-                parked_cars[car_id] = spot
-        
-        # Remove car button
+            parking_lot.park_car(car_id)
+    
+    with col3:
         if st.button("Remove car"):
-            car_id = st.text_input("Enter car ID:")
-            if car_id in parked_cars:
-                parking_lot.remove_car(car_id)
-                del parked_cars[car_id]
-            else:
-                st.write(f"Car {car_id} not found in parking lot")
+            parking_lot.remove_car(car_id)
+    
+    st.write("\n### Parking lot status:")
+    st.write(f"Available spots: {parking_lot.available_spots}/{parking_lot.capacity}")
+    if parking_lot.occupied_spots:
+        st.write("Occupied spots:")
+        for spot, car_id in parking_lot.occupied_spots.items():
+            st.write(f"Spot {spot}: Car {car_id}")
+    else:
+        st.write("No cars parked in the lot.")
         
-        # Exit button
-        if st.button("Exit"):
-            st.write("Exiting...")
-            break
-        
-        time.sleep(1)
+    time.sleep(1)
 
 if __name__ == "__main__":
     main()
