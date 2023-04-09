@@ -1,51 +1,68 @@
 #!/usr/bin/env python
 import streamlit as st
+import time
 
-# Define a list of available parking spots
-available_spots = ["A1", "A2", "A3", "B1", "B2", "B3", "C1", "C2", "C3"]
-
-# Define a dictionary to store the parked cars
-parked_cars = {}
+class ParkingLot:
+    def __init__(self, capacity):
+        self.capacity = capacity
+        self.available_spots = capacity
+        self.occupied_spots = {}
+        
+    def park_car(self, car_id):
+        if self.available_spots == 0:
+            st.write("Sorry, parking lot is full.")
+        else:
+            spot = self.get_available_spot()
+            self.occupied_spots[spot] = car_id
+            self.available_spots -= 1
+            st.write(f"Car {car_id} parked at spot {spot}")
+    
+    def get_available_spot(self):
+        for i in range(1, self.capacity+1):
+            if i not in self.occupied_spots:
+                return i
+    
+    def remove_car(self, car_id):
+        for spot, parked_car_id in self.occupied_spots.items():
+            if parked_car_id == car_id:
+                del self.occupied_spots[spot]
+                self.available_spots += 1
+                st.write(f"Car {car_id} removed from spot {spot}")
+                break
+        else:
+            st.write(f"Car {car_id} not found in parking lot")
 
 def main():
-    st.title("Smart Car Parking")
-
-    # Display the current status of the parking spots
-    st.write("Current Parking Status:")
-    for spot in available_spots:
-        if spot in parked_cars:
-            st.write(f"{spot}: {parked_cars[spot]}")
+    st.title("Smart Car Parking Simulation")
+    capacity = st.number_input("Enter parking lot capacity:", value=5, min_value=1)
+    parking_lot = ParkingLot(capacity)
+    
+    while True:
+        st.write("\n### Parking lot status:")
+        st.write(f"Available spots: {parking_lot.available_spots}/{parking_lot.capacity}")
+        if parking_lot.occupied_spots:
+            st.write("Occupied spots:")
+            for spot, car_id in parking_lot.occupied_spots.items():
+                st.write(f"Spot {spot}: Car {car_id}")
         else:
-            st.write(f"{spot}: Empty")
-
-    # Ask the user to choose an action
-    action = st.selectbox("Choose an action:", ["Park car", "Remove car", "Exit"], key="action")
-
-    # Perform the chosen action
-    if action == "Park car":
-        park_car()
-    elif action == "Remove car":
-        remove_car()
-    else:
-        st.write("Thank you for using Smart Car Parking!")
-
-def park_car():
-    # Ask the user for the car details
-    name = st.text_input("Enter your name:", key="name")
-    car_number = st.text_input("Enter your car number:", key="car_number")
-    spot = st.selectbox("Choose a parking spot:", [spot for spot in available_spots if spot not in parked_cars], key="parking_spot")
-
-    # Park the car
-    parked_cars[spot] = f"{name} ({car_number})"
-    st.write(f"{spot} is now occupied by {name} ({car_number})")
-
-def remove_car():
-    # Ask the user for the parking spot to free up
-    spot = st.selectbox("Choose a parking spot to free up:", [spot for spot in parked_cars], key="remove_spot")
-
-    # Remove the parked car from the dictionary
-    removed_car = parked_cars.pop(spot)
-    st.write(f"{spot} is now empty. {removed_car} has left.")
+            st.write("No cars parked in the lot.")
+        
+        st.write("\n### Actions:")
+        action = st.selectbox("Choose an action:", ["Park car", "Remove car", "Exit"])
+        
+        if action == "Park car":
+            car_id = st.text_input("Enter car ID:")
+            if st.button("Park car"):
+                parking_lot.park_car(car_id)
+        elif action == "Remove car":
+            car_id = st.text_input("Enter car ID:")
+            if st.button("Remove car"):
+                parking_lot.remove_car(car_id)
+        elif action == "Exit":
+            st.write("Exiting...")
+            break
+        
+        time.sleep(1)
 
 if __name__ == "__main__":
     main()
