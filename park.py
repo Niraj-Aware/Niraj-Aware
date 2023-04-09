@@ -6,33 +6,28 @@ class ParkingLot:
     def __init__(self, capacity):
         self.capacity = capacity
         self.available_spots = capacity
-        self.occupied_spots = {}
-
+        self.occupied_spots = [None] * capacity
+        
     def park_car(self, car_id):
         if self.available_spots == 0:
             st.write("Sorry, parking lot is full.")
         else:
-            for spot, parked_car_id in self.occupied_spots.items():
-                if parked_car_id == car_id:
-                    st.write(f"Car {car_id} is already parked at spot {spot}.")
-                    return
-            # Car is not already parked, find available spot
             spot = self.get_available_spot()
-            self.occupied_spots[spot] = car_id
+            self.occupied_spots[spot] = {"car_id": car_id}
             self.available_spots -= 1
             st.write(f"Car {car_id} parked at spot {spot}")
     
     def get_available_spot(self):
-        for i in range(1, self.capacity+1):
-            if i not in self.occupied_spots:
+        for i, spot in enumerate(self.occupied_spots):
+            if spot is None:
                 return i
     
     def remove_car(self, car_id):
-        for spot, parked_car_id in self.occupied_spots.items():
-            if parked_car_id == car_id:
-                del self.occupied_spots[spot]
+        for i, spot in enumerate(self.occupied_spots):
+            if spot is not None and spot["car_id"] == car_id:
+                self.occupied_spots[i] = None
                 self.available_spots += 1
-                st.write(f"Car {car_id} removed from spot {spot}")
+                st.write(f"Car {car_id} removed from spot {i}")
                 break
         else:
             st.write(f"Car {car_id} not found in parking lot")
@@ -47,10 +42,11 @@ def main():
     
     st.write("\n### Parking lot status:")
     st.write(f"Available spots: {parking_lot.available_spots}/{parking_lot.capacity}")
-    if parking_lot.occupied_spots:
+    if any(parking_lot.occupied_spots):
         st.write("Occupied spots:")
-        for spot, car_id in parking_lot.occupied_spots.items():
-            st.write(f"Spot {spot}: Car {car_id}")
+        for i, spot in enumerate(parking_lot.occupied_spots):
+            if spot is not None:
+                st.write(f"Spot {i}: Car {spot['car_id']}")
     else:
         st.write("No cars parked in the lot.")
     
@@ -70,10 +66,11 @@ def main():
     
     st.write("\n### Parking lot status:")
     st.write(f"Available spots: {parking_lot.available_spots}/{parking_lot.capacity}")
-    if parking_lot.occupied_spots:
+    if any(parking_lot.occupied_spots):
         st.write("Occupied spots:")
-        for spot, car_id in parking_lot.occupied_spots.items():
-            st.write(f"Spot {spot}: Car {car_id}")
+        for i, spot in enumerate(parking_lot.occupied_spots):
+            if spot is not None:
+                st.write(f"Spot {i}: Car {spot['car_id']}")
     else:
         st.write("No cars parked in the lot.")
         
