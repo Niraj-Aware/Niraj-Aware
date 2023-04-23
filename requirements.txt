@@ -1,0 +1,8 @@
+streamlit
+spacy
+en-core-web-sm
+opencv-python-headless
+pytesseract
+pillow
+numpy
+
